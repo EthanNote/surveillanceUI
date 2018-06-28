@@ -1,19 +1,378 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
+<head>
+	<meta charset="UTF-8">
+	<title>Hello World!</title>
+	<style>
+		/*GREENS: #4ac4ac, #399988, #0f4534, #0a1a17;*/
 
-    <script>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body,
+		html {
+/*			width: 100%;
+			height: 100%;*/
+			margin: 0px auto;
+			background-color: #0a1a17;
+			font-family: Verdana, Geneva, sans-serif;
+			font-size: 12px;
+			color: #ccc;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			text-align: center;
+		}
+
+		.container {
+			position: relative;
+			margin: 100px auto 50px auto;
+			height: 165px;
+			width: 330px;
+		}
+
+		.output {
+			line-height: 35px;
+			width: 60px;
+			height: 30px;
+			background-color: #0f4534;
+			border-radius: 60px 60px 0 0;
+			position: absolute;
+			top: 135px;
+			left: 135px;
+			text-align: center;
+		}
+
+		.initialValue {
+			border: none;
+			border-bottom: 1px solid #399988;
+			color: #399988;
+			display: block;
+			width: 3em;
+			background-color: transparent;
+			margin: 1em auto;
+			outline: none;
+			font-size: 16px;
+			text-align: center;
+		}
+		/*SVG*/
+
+		svg {
+			margin: 0px;
+			padding: 0;
+			cursor: pointer;
+			border: 1px solid #0a1a17;
+		}
+
+		svg.focusable {
+			border: 1px solid #0f4534;
+		}
+
+		.outline,
+		.fill,
+		.center,
+		.needle,
+		.scale,
+		.output {
+			pointer-events: none;
+		}
+
+		.outline {
+			fill: #0f4534;
+		}
+
+		.fill {
+			fill: #399988;
+		}
+
+		.needle {
+			fill: #aa0000;
+		}
+
+		.scale {
+			stroke: #aaa;
+		}
+
+		text {
+			text-anchor: middle;
+			dominant-baseline: alphabetic;
+			font: 12px verdana, sans-serif;
+			fill: #aaa;
+		}
+		
+		/*.footer{
+			margin-top: 30px
+		}
+*/
+		p{
+			margin: 10px;
+		}
+
+
+
+		</style>
+	</head>
+	<body>
+		<div class="container A">
+			<svg class="typeRange" height="165" width="330" view-box="0 0 330 165">
+
+				<g class="scale" stroke="red"><line class="scale" x1="35" y1="159.99999999999997" x2="76" y2="160"></line><text class="scale" x="20" y="159.99999999999997">0</text><line class="scale" x1="41.36265288163004" y1="119.82779073125683" x2="80.35597004973134" y2="132.49748750062966"></line><text class="scale" x="27.09680513720275" y="115.19253581563261">10</text><line class="scale" x1="59.82779073125684" y1="83.58791720197848" x2="92.99748750062969" y2="107.68711254596988"></line><text class="scale" x="47.69253581563264" y="74.77113841759137">20</text><line class="scale" x1="88.58791720197851" y1="54.827790731256826" x2="112.68711254596991" y2="87.99748750062967"></line><text class="scale" x="79.77113841759142" y="42.692535815632624">30</text><line class="scale" x1="124.82779073125684" y1="36.36265288163003" x2="137.4974875006297" y2="75.35597004973133"></line><text class="scale" x="120.19253581563264" y="22.096805137202722">40</text><line class="scale" x1="165" y1="30" x2="165" y2="71"></line><text class="scale" x="165" y="15">50</text><line class="scale" x1="205.17220926874316" y1="36.36265288163004" x2="192.5025124993703" y2="75.35597004973134"></line><text class="scale" x="209.80746418436738" y="22.09680513720275">60</text><line class="scale" x1="241.41208279802152" y1="54.827790731256826" x2="217.31288745403012" y2="87.99748750062967"></line><text class="scale" x="250.2288615824086" y="42.692535815632624">70</text><line class="scale" x1="270.1722092687432" y1="83.5879172019785" x2="237.0025124993703" y2="107.68711254596988"></line><text class="scale" x="282.3074641843674" y="74.7711384175914">80</text><line class="scale" x1="288.63734711837" y1="119.82779073125684" x2="249.64402995026865" y2="132.4974875006297"></line><text class="scale" x="302.90319486279725" y="115.19253581563262">90</text><line class="scale" x1="295" y1="160" x2="254" y2="160"></line><text class="scale" x="310" y="160">100</text></g>
+
+				<path class="outline" d="M 290, 160 A125,125 0 0 0 40,160 H71 A94,94 0 0 1 259,160 z"></path>
+				<path class="fill" d="M 290, 160 A125,125 0 0 0 40,160 H71 A94,94 0 0 1 259,160 z"></path>
+				<polygon class="needle" points="165,155 305,160 165,165"></polygon>
+			</svg>
+			<div class="output">100</div>
+		</div>
+		<input type="hidden" class="initialValue" value="18">
+		<h1>Detection density</h1>
+
+		<p>Detection count for last 60 seconds</p>
+		<!-- All of the Node.js APIs are available in this renderer process. -->
+		<p id="port"></p>
+
+		<!-- <div class="footer">
+		We are using Node.js <script>document.write(process.versions.node)</script>,
+		Chromium <script>document.write(process.versions.chrome)</script>,
+		and Electron <script>document.write(process.versions.electron)</script>.
+		</div> -->
+
+
+		
+  <script type="text/javascript">
+  	var containersRy = document.querySelector(".container");
+  	var svg = document.querySelector(".typeRange");
+  	var output = document.querySelector(".output");
+  	var outline = document.querySelector(".outline");
+  	var fill = document.querySelector(".fill");
+  	var center = document.querySelector(".center");
+  	var needle = document.querySelector(".needle");
+
+  	var initialValue = document.querySelector(".initialValue");
+
+  	var rad = Math.PI / 180;
+  	var NS = "http:\/\/www.w3.org/2000/svg";
+
+  	var W = parseInt(window.getComputedStyle(svg, null).getPropertyValue("width"));
+  	var offset = 40;
+  	var cx = ~~(W / 2);
+  	var cy = 160;
+
+  	var r1 = cx - offset;
+  	var delta = ~~(r1 / 4);
+
+  	var initVal = initialValue.value;
+
+  	var isDragging = false;
+
+  	var x1 = cx + r1,
+  	y1 = cy;
+  	var r2 = r1 - delta;
+
+  	var x2 = offset,
+  	y2 = cy;
+  	var x3 = x1 - delta,
+  	y3 = cy;
+
+  	function drawScale() {
+  		sr1 = r1 + 5;
+  		sr2 = r2 - 5;
+  		srT = r1 + 20;
+  		var scale = document.querySelector(".scale");
+  		clearRect(scale)
+  		var n = 0;
+  		for (var sa = -180; sa <= 0; sa += 18) {
+  			var sx1 = cx + sr1 * Math.cos(sa * rad);
+  			var sy1 = cy + sr1 * Math.sin(sa * rad);
+  			var sx2 = cx + sr2 * Math.cos(sa * rad);
+  			var sy2 = cy + sr2 * Math.sin(sa * rad);
+  			var sxT = cx + srT * Math.cos(sa * rad);
+  			var syT = cy + srT * Math.sin(sa * rad);
+
+  			var scaleLine = document.createElementNS(NS, "line");
+  			var scaleLineObj = {
+  				class: "scale",
+  				x1: sx1,
+  				y1: sy1,
+  				x2: sx2,
+  				y2: sy2
+  			};
+  			setSVGAttributes(scaleLine, scaleLineObj);
+
+  			scale.appendChild(scaleLine);
+
+  			var scaleText = document.createElementNS(NS, "text");
+  			var scaleTextObj = {
+  				class: "scale",
+  				x: sxT,
+  				y: syT,
+  			};
+  			setSVGAttributes(scaleText, scaleTextObj);
+  			scaleText.textContent = n * 10;
+  			scale.appendChild(scaleText);
+
+  			n++
+
+  		}
+
+  	}
+
+  	function drawInput(cx, cy, r1, offset, delta, a) {
+
+  		var d1 = getD1(cx, cy, r1, offset, delta);
+  		var d2 = getD2(cx, cy, r1, offset, delta, a);
+
+  		drawScale();
+
+  		outline.setAttributeNS(null, "d", d1);
+  		fill.setAttributeNS(null, "d", d2);
+
+  		drawNeedle(cx, cy, r1, a);
+  	}
+
+  	function updateInput(p, cx, cy, r1, offset, delta) {
+
+  		var x = p.x;
+  		var y = p.y;
+  		var lx = cx - x;
+  		var ly = cy - y;
+
+  		var a = Math.atan2(ly, lx) / rad - 180;
+
+  		drawInput(cx, cy, r1, offset, delta, a);
+  		output.innerHTML = Math.round((a + 180) / 1.8);
+  		initialValue.value = Math.round((a + 180) / 1.8);
+  	}
+
+  	function getD1(cx, cy, r1, offset, delta) {
+
+  		var x1 = cx + r1,
+  		y1 = cy;
+  		var x2 = offset,
+  		y2 = cy;
+  		var r2 = r1 - delta;
+  		var x3 = x1 - delta,
+  		y3 = cy;
+  		var d1 =
+  		"M " + x1 + ", " + y1 + " A" + r1 + "," + r1 + " 0 0 0 " + x2 + "," + y2 + " H" + (offset + delta) + " A" + r2 + "," + r2 + " 0 0 1 " + x3 + "," + y3 + " z";
+  		return d1;
+  	}
+
+  	function getD2(cx, cy, r1, offset, delta, a) {
+  		a *= rad;
+  		var r2 = r1 - delta;
+  		var x4 = cx + r1 * Math.cos(a);
+  		var y4 = cy + r1 * Math.sin(a);
+  		var x5 = cx + r2 * Math.cos(a);
+  		var y5 = cy + r2 * Math.sin(a);
+
+  		var d2 =
+  		"M " + x4 + ", " + y4 + " A" + r1 + "," + r1 + " 0 0 0 " + x2 + "," + y2 + " H" + (offset + delta) + " A" + r2 + "," + r2 + " 0 0 1 " + x5 + "," + y5 + " z";
+  		return d2;
+  	}
+
+  	function drawNeedle(cx, cy, r1, a) {
+
+  		var nx1 = cx + 5 * Math.cos((a - 90) * rad);
+  		var ny1 = cy + 5 * Math.sin((a - 90) * rad);
+
+  		var nx2 = cx + (r1 + 15) * Math.cos(a * rad);
+  		var ny2 = cy + (r1 + 15) * Math.sin(a * rad);
+
+  		var nx3 = cx + 5 * Math.cos((a + 90) * rad);
+  		var ny3 = cy + 5 * Math.sin((a + 90) * rad);
+
+  		var points = nx1 + "," + ny1 + " " + nx2 + "," + ny2 + " " + nx3 + "," + ny3;
+  		needle.setAttributeNS(null, "points", points);
+  	}
+
+	// helpers
+	function oMousePos(elmt, evt) {
+		var ClientRect = elmt.getBoundingClientRect();
+	  return { //obj
+	  	x: Math.round(evt.clientX - ClientRect.left),
+	  	y: Math.min(Math.round(evt.clientY - ClientRect.top), cy)
+	  }
+	}
+
+	function clearRect(node) {
+		while (node.firstChild) {
+			node.removeChild(node.firstChild);
+		}
+	}
+
+	function setSVGAttributes(elmt, oAtt) {
+		for (var prop in oAtt) {
+			elmt.setAttributeNS(null, prop, oAtt[prop]);
+		}
+	}
+
+
+	var setDisplayValue =function(val){
+		//var val = this.value;
+		var newVal = (!isNaN(val) && val >= 0 && val <= 100) ? val : 0;
+		var pa = (newVal * 1.8) - 180;
+		var p = {}
+		p.x = cx + r1 * Math.cos(pa * rad);
+		p.y = cy + r1 * Math.sin(pa * rad);
+		updateInput(p, cx, cy, r1, offset, delta)
+	}
+	// events
+	window.addEventListener("load", function() {
+		// var pa = (initVal * 1.8) - 180;
+		// var p = {}
+		// p.x = cx + r1 * Math.cos(pa * rad);
+		// p.y = cy + r1 * Math.sin(pa * rad);
+		// updateInput(p, cx, cy, r1, offset, delta)
+		setDisplayValue(0)
+	}, false);
+
+	initialValue.addEventListener("input", function() {
+		var val = this.value;
+		setDisplayValue(val)
+		// var newVal = (!isNaN(val) && val >= 0 && val <= 100) ? val : 18;
+		// var pa = (newVal * 1.8) - 180;
+		// var p = {}
+		// p.x = cx + r1 * Math.cos(pa * rad);
+		// p.y = cy + r1 * Math.sin(pa * rad);
+		// updateInput(p, cx, cy, r1, offset, delta)
+	}, false);
+
+
+
+	// svg.addEventListener("mousedown", function(evt) {
+	// 	isDragging = true;
+	// 	this.classList.add("focusable");
+	// 	var mousePos = oMousePos(svg, evt);
+	// 	updateInput(mousePos, cx, cy, r1, offset, delta);
+	// }, false);
+
+	// svg.addEventListener("mouseup", function(evt) {
+	// 	isDragging = false;
+	// 	this.classList.remove("focusable");
+	// }, false);
+
+	// svg.addEventListener("mouseout", function(evt) {
+	// 	isDragging = false;
+	// 	this.classList.remove("focusable");
+	// }, false);
+
+	// svg.addEventListener("mousemove", function(evt) {
+	// 	if (isDragging) {
+	// 		var mousePos = oMousePos(svg, evt);
+	// 		updateInput(mousePos, cx, cy, r1, offset, delta);
+	// 	}
+	// }, false);
+
+	setDisplayValue(0)
+  </script>
+
+  <script>
       // You can also require other files to run in this process
+      
       require('./renderer.js')
-    </script>
-  </body>
+      require('./udp.js')
+  </script>
+</body>
 </html>
